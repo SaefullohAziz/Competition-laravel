@@ -36,6 +36,24 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 		Route::delete('destroy', 'CompetitionController@destroy')->name('destroy');
 	});
 
+	// Contest
+	Route::resource('contest', 'ContestController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('contest')->name('contest.')->group(function () {
+		Route::post('list', 'ContestController@list')->name('list');
+		Route::delete('destroy', 'ContestController@destroy')->name('destroy');
+	});
+
+	// School
+	Route::resource('school', 'SchoolController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('school')->name('school.')->group(function () {
+		Route::post('list', 'SchoolController@list')->name('list');
+		Route::delete('destroy', 'SchoolController@destroy')->name('destroy');
+	});
+
 	// Administrator
 	Route::resource('administrator', 'AdministratorController', ['except' => [
 		'destroy',
@@ -45,6 +63,23 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 		Route::delete('destroy', 'AdministratorController@destroy')->name('destroy');
 	});
 
+	// Juri
+	Route::resource('juri', 'JuriController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('juri')->name('juri.')->group(function () {
+		Route::post('list', 'JuriController@list')->name('list');
+		Route::delete('destroy', 'JuriController@destroy')->name('destroy');
+	});
+
+	// User
+	Route::resource('user', 'UserController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('user')->name('user.')->group(function () {
+		Route::post('list', 'UserController@list')->name('list');
+		Route::delete('destroy', 'UserController@destroy')->name('destroy');
+	});
 
 });
 /**
