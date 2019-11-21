@@ -33,8 +33,18 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 	]]);
 	Route::prefix('competition')->name('competition.')->group(function () {
 		Route::post('list', 'CompetitionController@list')->name('list');
-		Route::get('destroy', 'CompetitionController@destroy')->name('destroy');
+		Route::delete('destroy', 'CompetitionController@destroy')->name('destroy');
 	});
+
+	// Administrator
+	Route::resource('administrator', 'AdministratorController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('administrator')->name('administrator.')->group(function () {
+		Route::post('list', 'AdministratorController@list')->name('list');
+		Route::delete('destroy', 'AdministratorController@destroy')->name('destroy');
+	});
+
 
 });
 /**
