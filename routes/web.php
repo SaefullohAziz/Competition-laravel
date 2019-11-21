@@ -64,12 +64,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 	});
 
 	// Juri
-	Route::resource('juri', 'JuriController', ['except' => [
+	Route::resource('juri', 'JudgeController', ['except' => [
 		'destroy',
 	]]);
 	Route::prefix('juri')->name('juri.')->group(function () {
-		Route::post('list', 'JuriController@list')->name('list');
-		Route::delete('destroy', 'JuriController@destroy')->name('destroy');
+		Route::post('list', 'JudgeController@list')->name('list');
+		Route::delete('destroy', 'JudgeController@destroy')->name('destroy');
 	});
 
 	// User
