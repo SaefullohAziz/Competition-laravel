@@ -14,6 +14,11 @@
         </a>
       </li>
       <li class="menu-header">{{ __('Menu') }}</li>
+      <li class="{{ (request()->is('/')?'active':'') }}">
+        <a class="nav-link" href="{{ route('home') }}">
+          <i class="fa fa-home"></i> <span>{{ __('Competition') }}</span>
+        </a>
+      </li>
       <li class="menu-header">{{ __('Logout') }}</li>
       <li>
         <a class="nav-link text-danger" href="{{ route('logout') }}"
