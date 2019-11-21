@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Traits\Uuids;
@@ -12,7 +11,7 @@ use App\Contest;
 
 class Competition extends Model
 {
-	use Softdeletes, UUIDS;
+	use Uuids;
 
     protected $fillable = [
         'name', 'alias', 'description', 'date', 'theme', 'terms_and_conditions', 'image', 'contact'

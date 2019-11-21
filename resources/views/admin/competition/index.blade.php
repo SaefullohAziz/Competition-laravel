@@ -28,10 +28,9 @@
 
 		<div class="card card-primary">
 			<div class="card-header">
-				<!-- if (auth()->guard('admin')->user()->can('create activities')) -->
+				<!-- if (auth()->guard('admin')->user()->can('create competition')) -->
 					<a href="{{ route('admin.competition.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
 				<!-- endif -->
-				<button class="btn btn-icon btn-secondary" title="{{ __('Filter') }}" data-toggle="modal" data-target="#filterModal"><i class="fa fa-filter"></i></button>
             	<button class="btn btn-icon btn-secondary" onclick="reloadTable()" title="{{ __('Refresh') }}"><i class="fa fa-sync"></i></i></button>
 			</div>
 			<div class="card-body">
@@ -55,12 +54,6 @@
 					</table>
 				</div>
 			</div>
-			<div class="card-footer bg-whitesmoke">
-				<!-- if (auth()->guard('admin')->user()->can('delete activities')) -->
-					<button class="btn btn-danger btn-sm" name="deleteData" title="{{ __('Delete') }}">{{ __('Delete') }}</button>
-				<!-- endif -->
-			</div>
-			{{ Form::close() }}
 		</div>
 
 	</div>
@@ -79,9 +72,6 @@
 				"type": "POST",
 				"data": function (d) {
 		          d._token = "{{ csrf_token() }}";
-		          d.type = $('select[name="type"]').val();
-		          d.status = $('select[name="status"]').val();
-		          d.school = $('select[name="school"]').val();
 		        }
 			},
 			columns: [
@@ -113,47 +103,6 @@
       		},
   		});
 
-		$('[name="deleteData"]').click(function(event) {
-			if ($('[name="selectedData[]"]:checked').length > 0) {
-				event.preventDefault();
-				var selectedData = $('[name="selectedData[]"]:checked').map(function(){
-					return $(this).val();
-				}).get();
-				swal({
-					title: '{{ __("Are you sure want to delete this data?") }}',
-					text: '',
-					icon: 'warning',
-					buttons: ['{{ __("Cancel") }}', true],
-					dangerMode: true,
-				})
-				.then((willDelete) => {
-					if (willDelete) {
-						$.ajax({
-							url : "{{ route('admin.competition.destroy') }}",
-							type: "DELETE",
-							dataType: "JSON",
-							data: {"_token" : "{{ csrf_token() }}", "selectedData" : selectedData},
-							success: function(data)
-							{
-								reloadTable();
-							},
-							error: function (jqXHR, textStatus, errorThrown)
-							{
-								if (JSON.parse(jqXHR.responseText).status) {
-									swal("{{ __('Failed!') }}", '{{ __("Data cannot be deleted.") }}', "warning");
-								} else {
-									swal(JSON.parse(jqXHR.responseText).message, "", "error");
-								}
-							}
-						});
-					}
-				});
-			} else {
-				swal("{{ __('Please select a data..') }}", "", "warning");
-			}
-		});
-	});
-
 	function reloadTable() {
 	    table.ajax.reload(null,false); //reload datatable ajax
 	    $('[name="selectData"]').iCheck('uncheck');
@@ -163,32 +112,6 @@
 		reloadTable();
 		$('#filterModal').modal('hide');
 	}
+});
 </script>
-
-<!-- Modal -->
-<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="filterModallLabel">{{ __('Filter') }}</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			{{ Form::open(['url' => '#', 'files' => true]) }}
-				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="row">
-							
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer bg-whitesmoke d-flex justify-content-center">
-					<!-- {{ Form::button(__('Filter'), ['class' => 'btn btn-primary', 'onclick' => 'filter()']) }}
-					{{ Form::button(__('Cancel'), ['class' => 'btn btn-secondary', ' data-dismiss' => 'modal']) }} -->
-				</div>
-			{{ Form::close() }}
-		</div>
-	</div>
-</div>
 @endsection
