@@ -21,7 +21,17 @@ Route::get('/home', 'HomeController@index')->name('home');
  */
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
 	// Home
-    Route::get('/home', 'HomeController@index')->name('home');    
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    // Competition
+	Route::resource('competition', 'CompetitionController', ['except' => [
+		'destroy',
+	]]);
+	Route::prefix('competition')->name('competition.')->group(function () {
+		Route::post('list', 'CompetitionController@list')->name('list');
+		Route::get('destroy', 'CompetitionController@destroy')->name('destroy');
+	});
+
 });
 /**
  * Juri Guard

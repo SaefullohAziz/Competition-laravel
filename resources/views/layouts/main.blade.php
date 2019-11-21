@@ -2,11 +2,23 @@
 
 <div id="app">
   <div class="main-wrapper main-wrapper-1">
-   
-  @include('layouts.navbar')
+    @auth('admin')
+      @include('admin.layouts.navbar')
 
-  @include('layouts.sidebar')
+      @include('admin.layouts.sidebar')
+    @endauth
 
+    @auth('juri')
+      @include('juri.layouts.navbar')
+
+      @include('juri.layouts.sidebar')
+    @endauth
+
+    @auth('web')
+      @include('layouts.navbar')
+
+      @include('layouts.sidebar')
+    @endauth
     <!-- Main Content -->
     <div class="main-content">
       <section class="section">
