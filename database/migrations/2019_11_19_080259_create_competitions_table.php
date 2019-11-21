@@ -16,13 +16,13 @@ class CreateCompetitionsTable extends Migration
         Schema::create('competitions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('alias');
-            $table->string('theme');
-            $table->string('description');
+            $table->string('alias')->nullable();
+            $table->string('theme')->nullable();
+            $table->string('description')->nullable();
             $table->date('date');
-            $table->string('contact');
-            $table->string('image');
-            $table->text('terms_and_Conditions');
+            $table->string('contact')->nullable();
+            $table->string('image')->nullable();
+            $table->text('terms_and_conditions')->nullable();
             $table->timestamps();
         });
     }
