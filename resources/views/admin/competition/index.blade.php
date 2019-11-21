@@ -46,9 +46,7 @@
 								<th>{{ __('Name') }}</th>
 								<th>{{ __('Alias') }}</th>
 								<th>{{ __('Theme') }}</th>
-								<th>{{ __('Description') }}</th>
 								<th>{{ __('Date') }}</th>
-								<th>{{ __('Terms And Conditions') }}</th>
 								<th>{{ __('Action') }}</th>
 							</tr>
 						</thead>
@@ -92,9 +90,7 @@
 				{ data: 'name', name: 'name' },
 				{ data: 'alias', name: 'alias' },
                 { data: 'theme', name: 'theme' },
-                { data: 'desciption', name: 'desciption' },
 				{ data: 'date', name: 'date' },
-				{ data: 'terms_and_conditions', name: 'terms_and_conditions' },
 				{ data: 'action', name: 'action', 'searchable': false },
 			],
 			"columnDefs": [

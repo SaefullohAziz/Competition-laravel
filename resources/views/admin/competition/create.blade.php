@@ -35,9 +35,9 @@
 							<legend>{{ __('Competition Data') }}</legend>
 							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Alias'), 'alias', old('alias'), __('Alias'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Alias'), 'alias', old('alias'), __('Alias') ) }}
 
-							{{ Form::bsText(null, __('Theme'), 'theme', old('theme'), __('Theme'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Theme'), 'theme', old('theme'), __('Theme') ) }}
 
 							{{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
 
@@ -47,16 +47,16 @@
 						<fieldset class="col-sm-6">
 							<legend>{{ __('Details') }}</legend>
 
-							{{ Form::bsTextarea(null, __('Description'), 'description', old('description'), __('Description'), ['required' => '']) }}
+							{{ Form::bsTextarea(null, __('Description'), 'description', old('description'), __('Description')) }}
 
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', old('terms_and_conditions'), __('Terms And Conditions'), ['required' => '']) }}
+							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', old('terms_and_conditions'), __('Terms And Conditions')) }}
 
 						</fieldset>
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
 					{{ Form::submit(__('Save'), ['class' => 'btn btn-primary']) }}
-					{{ link_to(url()->previous(),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.competition.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 

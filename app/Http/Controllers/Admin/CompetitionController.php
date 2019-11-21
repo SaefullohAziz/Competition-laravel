@@ -57,7 +57,7 @@ class CompetitionController extends Controller
                     return (date('d-m-Y h:m:s', strtotime($data->created_at)));
                 })
                 ->addColumn('action', function($data) {
-                    return '<a class="btn btn-sm btn-success" href="'.route('admin.competitio.show', $data->id).'" title="'.__("See detail").'"><i class="fa fa-eye"></i> '.__("See").'</a> <a class="btn btn-sm btn-warning" href="'.route('admin.competition.edit', $data->id).'" title="'.__("Edit").'"><i class="fa fa-edit"></i> '.__("Edit").'</a>';
+                    return '<a class="btn btn-sm btn-success" href="'.route('admin.competition.show', $data->id).'" title="'.__("See detail").'"><i class="fa fa-eye"></i> '.__("See").'</a> <a class="btn btn-sm btn-warning" href="'.route('admin.competition.edit', $data->id).'" title="'.__("Edit").'"><i class="fa fa-edit"></i> '.__("Edit").'</a>';
                 })
                 ->rawColumns(['DT_RowIndex', 'action'])
                 ->make(true);
@@ -95,7 +95,24 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // if (auth()->user()->cant('create', Competition::class)) {
+        //     return redirect()->route('competition.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $validatedData = $request->validate([
+            'name' => 'required|unique:name|max:255',
+            'alias' => 'required|unique:alias',
+            'theme' => 'required',
+            'theme' => 'required',
+            'image' => 'mimes:jpeg,png,jpg',
+            'date' => 'required',
+        ]);
+        $request->merge([
+            'date' => date('Y-m-d', strtotime($request->date)),
+        ]);
+        $competition = Competition::create($request->all());
+        $competition->image = $this->uploadImage($competition, $request);
+        $competition->save();
+        return redirect(route('admin.competition.index'))->with('alert-success', __($this->createdMessage));
     }
 
     /**
@@ -141,5 +158,23 @@ class CompetitionController extends Controller
     public function destroy(competition $competition)
     {
         //
+    }
+
+    /**
+     * Upload submission letter
+     * 
+     * @param  \App\Subsidy  $subsidy
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $oldFile
+     * @return string
+     */
+    public function uploadImage($competition, Request $request, $oldFile = null)
+    {
+        if ($request->hasFile('image')) {
+            $filename = 'image_'.md5($competition->name).'.'.$request->image->extension();
+            $path = $request->image->storeAs('public/competition/'.$competition->name, $filename);
+            return $competition->id.'/'.$filename;
+        }
+        return $oldFile;
     }
 }
