@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Juri;
 
 use App\Http\Controllers\Controller;
-use App\competition;
+use App\Competition;
 use Illuminate\Http\Request;
 
 class CompetitionController extends Controller
@@ -45,7 +45,7 @@ class CompetitionController extends Controller
      * @param  \App\competition  $competition
      * @return \Illuminate\Http\Response
      */
-    public function show(competition $competition)
+    public function show(Competition $competition)
     {
         //
     }
@@ -56,7 +56,7 @@ class CompetitionController extends Controller
      * @param  \App\competition  $competition
      * @return \Illuminate\Http\Response
      */
-    public function edit(competition $competition)
+    public function edit(Competition $competition)
     {
         //
     }
@@ -68,7 +68,7 @@ class CompetitionController extends Controller
      * @param  \App\competition  $competition
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, competition $competition)
+    public function update(Request $request, Competition $competition)
     {
         //
     }
@@ -79,7 +79,7 @@ class CompetitionController extends Controller
      * @param  \App\competition  $competition
      * @return \Illuminate\Http\Response
      */
-    public function destroy(competition $competition)
+    public function destroy(Competition $competition)
     {
         //
     }

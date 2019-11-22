@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Juri;
 
 use App\Http\Controllers\Controller;
-use App\contest;
+use App\Contest;
 use Illuminate\Http\Request;
 
 class ContestController extends Controller
@@ -45,7 +45,7 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function show(contest $contest)
+    public function show(Contest $contest)
     {
         //
     }
@@ -56,7 +56,7 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function edit(contest $contest)
+    public function edit(Contest $contest)
     {
         //
     }
@@ -79,7 +79,7 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(contest $contest)
+    public function destroy(Contest $contest)
     {
         //
     }

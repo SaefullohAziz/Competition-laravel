@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Juri;
 
 use App\Http\Controllers\Controller;
-use App\judge;
+use App\Judge;
 use Illuminate\Http\Request;
 
 class JudgeController extends Controller
@@ -45,7 +45,7 @@ class JudgeController extends Controller
      * @param  \App\judge  $judge
      * @return \Illuminate\Http\Response
      */
-    public function show(judge $judge)
+    public function show(Judge $judge)
     {
         //
     }
@@ -56,7 +56,7 @@ class JudgeController extends Controller
      * @param  \App\judge  $judge
      * @return \Illuminate\Http\Response
      */
-    public function edit(judge $judge)
+    public function edit(Judge $judge)
     {
         //
     }
@@ -68,7 +68,7 @@ class JudgeController extends Controller
      * @param  \App\judge  $judge
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, judge $judge)
+    public function update(Request $request, Judge $judge)
     {
         //
     }
@@ -79,7 +79,7 @@ class JudgeController extends Controller
      * @param  \App\judge  $judge
      * @return \Illuminate\Http\Response
      */
-    public function destroy(judge $judge)
+    public function destroy(Judge $judge)
     {
         //
     }
