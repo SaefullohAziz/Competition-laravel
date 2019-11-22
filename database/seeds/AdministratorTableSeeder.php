@@ -14,11 +14,17 @@ class AdministratorsTableSeeder extends Seeder
      */
     public function run()
     {
+        if(defined('PASSWORD_ARGON2ID')) {
+            $hash = password_hash('admincompetition', PASSWORD_ARGON2ID, array('time_cost' => 10, 'memory_cost' => '2048k', 'threads' => 6));
+        } else {
+            $hash = password_hash('admincompetition', PASSWORD_DEFAULT, array('time_cost' => 10, 'memory_cost' => '2048k', 'threads' => 6));
+        }
+
         $admin = Administrator::create([
             'username' => 'admin',
             'name' => 'Administrator',
             'email' => 'admin@competition.org',
-            'password' => \Illuminate\Support\Facades\Hash::make('admincompetition'),
+            'password' => $hash,
         ]);
         $admin->assignRole('supersu');
     }
