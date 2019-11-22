@@ -11,7 +11,15 @@ use App\ContestJudge;
 
 class Judge extends Authenticatable
 {
-	use Softdeletes;
+	use Softdeletes, Uuids;
+
+	protected $fillable = [
+        'name', 'address', 'carrier', 'organitation', 'gender', 'username', 'email', 'email_verified_at', 'password', 'photo'
+    ];
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
     
     public function contestJudge(){
     	return $this->belongsTo(ContestJudge::class);

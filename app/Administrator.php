@@ -14,6 +14,10 @@ class Administrator extends Authenticatable
 {
 	use Softdeletes, Uuids, HasRoles;
 
+    protected $fillable = [
+        'name', 'username', 'email', 'emeail_verified_at'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
