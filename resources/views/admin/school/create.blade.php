@@ -28,33 +28,29 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => ['admin.contest.update', $contest->id], 'files' => true, 'method' => 'put']) }}
+			{{ Form::open(['route' => 'admin.school.store']) }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
-							<legend>{{ __('Contest Data') }}</legend>
-							{{ Form::bsSelect(null, __('Competition Name'), 'competition_id', $competitions, $contest->competition_id, __('Competition Name'), ['required' => '']) }}
+							<legend>{{ __('School Data') }}</legend>
+							{{ Form::bsSelect(null, __('Type'), 'type', $types, old('school'), __('Type'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Name'), 'name', $contest->name, __('Name'), ['required' => '']) }}
-
-							{{ Form::bsText(null, __('Contest Limit'), 'limit', $contest->limit, __('Contest Limit') ) }}
+							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => ''], [__('Ex: 1 Sumedang')]) }}
 
 						</fieldset>
 						<fieldset class="col-sm-6">
 							<legend>{{ __('Details') }}</legend>
 
-							{{ Form::bsTextarea(null, __('Implementation Instructions'), 'implementation_instruction', $contest->implementation_instruction, __('Implementation Instructions') ) }}
+							{{ Form::bsEmail(null, __('School Email'), 'email', old('email'), __('School Email'), ['required' => ''] ) }}
 
-							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instructions', $contest->techincal_instructions, __('Technical Instructions') ) }}
-
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', $contest->terms_and_conditions, __('Terms And Conditions') ) }}
+							{{ Form::bsTextarea(null, __('School Address'), 'address', old('address'), __('School Address') ) }}
 
 						</fieldset>
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
 					{{ Form::submit(__('Save'), ['class' => 'btn btn-primary']) }}
-					{{ link_to(route('admin.contest.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.school.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 

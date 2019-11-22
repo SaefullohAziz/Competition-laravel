@@ -37,6 +37,8 @@ class ContestController extends Controller
                 route('admin.contest.index') => __('Contest'),
                 null => __('index')
             ],
+            'competitions' => Competition::orderBy('created_at')->pluck('name','id')->toArray(),
+            'contests' => Contest::groupBy('name')->pluck('name', 'name')->toArray(),
         ];
         return view('admin.contest.index', $view);
     }
@@ -73,10 +75,10 @@ class ContestController extends Controller
     public function create()
     {
         // if ( ! auth()->guard('admin')->user()->can('create ' . $this->table)) {
-        //     return redirect()->route('admin.school.index')->with('alert-danger', __($this->noPermission));
+        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->noPermission));
         // }
-        // if (auth()->guard('admin')->user()->cant('adminCreate', School::class)) {
-        //     return redirect()->route('admin.school.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // if (auth()->guard('admin')->user()->cant('adminCreate', Contest::class)) {
+        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->unauthorizedMessage));
         // }
         $view = [
             'title' => __('Create Contest'),
@@ -115,9 +117,19 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function show(contest $contest)
+    public function show(Contest $contest)
     {
-        //
+        $view = [
+            'title' => __('Contest Detail'),
+            'breadcrumbs' => [
+                route('admin.contest.index') => __('Contest'),
+                null => __('Show')
+            ],
+            'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
+            'contest' => $contest,
+        ];
+
+        return view('admin.contest.show', $view);
     }
 
     /**
@@ -126,9 +138,22 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function edit(contest $contest)
+    public function edit(Contest $contest)
     {
-        //
+        // if (auth()->user()->cant('edit', contest::class)) {
+        //     return redirect()->route('contest.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $view = [
+            'title' => __('Contest Edit'),
+            'breadcrumbs' => [
+                route('admin.contest.index') => __('Contest'),
+                null => __('Edit')
+            ],
+            'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
+            'contest' => $contest,
+        ];
+
+        return view('admin.contest.edit', $view);
     }
 
     /**
@@ -138,9 +163,13 @@ class ContestController extends Controller
      * @param  \App\contest  $contest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, contest $contest)
+    public function update(Request $request, Contest $contest)
     {
-        //
+        // if (auth()->user()->cant('edit', contest::class)) {
+        //     return redirect()->route('contest.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $contest->fill($request->all());
+        return redirect(url()->previous())->with('alert-success', __($this->createdMessage));
     }
 
     /**

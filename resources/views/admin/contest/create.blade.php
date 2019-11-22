@@ -28,7 +28,7 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => 'admin.contest.store', 'files' => true]) }}
+			{{ Form::open(['route' => 'admin.contest.store']) }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
@@ -45,7 +45,7 @@
 
 							{{ Form::bsTextarea(null, __('Implementation Instructions'), 'implementation_instruction', old('implementation_instruction'), __('Implementation Instructions')) }}
 
-							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instractions', old('techincal_instractions'), __('Technical Instructions')) }}
+							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instructions', old('techincal_instructions'), __('Technical Instructions')) }}
 
 							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', old('terms_and_conditions'), __('Terms And Conditions')) }}
 

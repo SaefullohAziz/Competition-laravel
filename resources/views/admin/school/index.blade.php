@@ -28,8 +28,8 @@
 
 		<div class="card card-primary">
 			<div class="card-header">
-				<!-- if (auth()->guard('admin')->user()->can('create contest')) -->
-					<a href="{{ route('admin.contest.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
+				<!-- if (auth()->guard('admin')->user()->can('create school')) -->
+					<a href="{{ route('admin.school.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
 				<!-- endif -->
 				<button class="btn btn-icon btn-secondary" title="{{ __('Filter') }}" data-toggle="modal" data-target="#filterModal"><i class="fa fa-filter"></i></button>
             	<button class="btn btn-icon btn-secondary" onclick="reloadTable()" title="{{ __('Refresh') }}"><i class="fa fa-sync"></i></i></button>
@@ -43,8 +43,8 @@
 									<div class="checkbox icheck"><label><input type="checkbox" name="selectData"></label></div>
 								</th>
 								<th>{{ __('Created At') }}</th>
-								<th>{{ __('Competition Name') }}</th>
-								<th>{{ __('Contest Name') }}</th>
+								<th>{{ __('School Name') }}</th>
+								<th>{{ __('School Email') }}</th>
 								<th>{{ __('Action') }}</th>
 							</tr>
 						</thead>
@@ -72,19 +72,19 @@ table = $('#table4data').DataTable({
 	processing: true,
 	serverSide: true,
 	"ajax": {
-		"url": "{{ route('admin.contest.list') }}",
+		"url": "{{ route('admin.school.list') }}",
 		"type": "POST",
 		"data": function (d) {
           d._token = "{{ csrf_token() }}";
           d.competition_id = $('select[name="competitions"]').val();
-          d.contest_name = $('select[name="contests"]').val();
+          d.school_name = $('select[name="schools"]').val();
         }
 	},
 	columns: [
 		{ data: 'DT_RowIndex', name: 'DT_RowIndex', 'searchable': false },
 		{ data: 'created_at', name: 'created_at' },
-		{ data: 'competitions', name: 'competitions' },
 		{ data: 'name', name: 'name' },
+		{ data: 'email', name: 'email' },
 		{ data: 'action', name: 'action', 'searchable': false },
 	],
 	"columnDefs": [
@@ -123,7 +123,7 @@ table = $('#table4data').DataTable({
 			.then((willDelete) => {
 				if (willDelete) {
 					$.ajax({
-						url : "{{ route('admin.contest.destroy') }}",
+						url : "{{ route('admin.school.destroy') }}",
 						type: "DELETE",
 						dataType: "JSON",
 						data: {"_token" : "{{ csrf_token() }}", "selectedData" : selectedData},
@@ -155,7 +155,7 @@ function reloadTable() {
 
 function filter() {
 	console.log($('select[name="competitions"]').val());
-	console.log($('select[name="contests"]').val());
+	console.log($('select[name="schools"]').val());
 	reloadTable();
 	$('#filterModal').modal('hide');
 }
@@ -175,8 +175,6 @@ function filter() {
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row">
-							{{ Form::bsSelect('col-sm-4', __('Competition name'), 'competitions', $competitions, null, __('Select'), ['placeholder' => 'select']) }}
-							{{ Form::bsSelect('col-sm-4', __('Contest'), 'contests', $contests, null, __('Select'), ['placeholder' => 'select']) }}
 						</div>
 					</div>
 				</div>
