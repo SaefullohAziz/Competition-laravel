@@ -1,26 +1,64 @@
 <div class="main-sidebar sidebar-style-2">
   <aside id="sidebar-wrapper">
+    <!-- brand -->
     <div class="sidebar-brand">
       <a href="{{ route('home') }}">{{ config('app.name', 'Laravel') }}</a>
     </div>
+    <!-- shortbrand -->
     <div class="sidebar-brand sidebar-brand-sm">
       <a href="{{ route('home') }}">{{ config('app.shortname', 'LV') }}</a>
     </div>
+
+    <!-- menu -->
     <ul class="sidebar-menu">
+      <!-- dahsboard header -->
       <li class="menu-header">{{ __('Dashboard') }}</li>
-      <li class="{{ (request()->is('/')?'active':'') }}">
+
+      <!-- home -->
+      <li class="{{ (request()->is('/admin/home')?'active':'') }}">
         <a class="nav-link" href="{{ route('home') }}">
           <i class="fa fa-home"></i> <span>{{ __('Home') }}</span>
         </a>
       </li>
+
+      <!-- menu header -->
       <li class="menu-header">{{ __('Menu') }}</li>
-      <li class="{{ (request()->is('/competition')?'active':'') }}">
+
+      <!-- competition -->
+      <li class="{{ (request()->is('/admin/competition/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.competition.index') }}">
-          <i class="fa fa-home"></i> <span>{{ __('Competition') }}</span>
+          <i class="fa fa-trophy"></i> <span>{{ __('Competition') }}</span>
         </a>
       </li>
+
+      <!-- contest -->
+      <li class="{{ (request()->is('/admin/contest/*')?'active':'') }}">
+        <a class="nav-link" href="{{ route('admin.contest.index') }}">
+          <i class="fas fa-flag-checkered"></i><span>{{ __('Contest') }}</span>
+        </a>
+      </li>
+
+      <!-- school -->
+      <li class="{{ (request()->is('/admin/school/*')?'active':'') }}">
+        <a class="nav-link" href="{{ route('admin.school.index') }}">
+          <i class="fa fa-university"></i> <span>{{ __('Schools') }}</span>
+        </a>
+      </li>
+
+      <!-- setting -->
+      <li class="dropdown {{ (request()->is('/admin/user')||request()->is('admin/user/*')||request()->is('admin/juri')||request()->is('admin/juri/*')||request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}">
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-cogs"></i> <span>{{ __('Settings') }}</span></a>
+        <ul class="dropdown-menu">
+          <li class="{{ (request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.administrator.index') }}">{{ __('Payment') }}</a></li>
+          <li class="{{ (request()->is('admin/juri')||request()->is('admin/juri/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.juri.index') }}">{{ __('Users') }}</a></li>
+          <li class="{{ (request()->is('admin/user')||request()->is('admin/user/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.user.index') }}">{{ __('Users') }}</a></li>
+        </ul>
+      </li>
+
+      <!-- logout header -->
       <li class="menu-header">{{ __('Logout') }}</li>
       <li>
+        <!-- logout -->
         <a class="nav-link text-danger" href="{{ route('logout') }}"
           onclick="event.preventDefault();
           document.getElementById('logout-form').submit();">

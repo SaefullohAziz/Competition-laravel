@@ -31,7 +31,7 @@ class CompetitionController extends Controller
     public function index()
     {
         $view = [
-            'title' => __('Competitons'),
+            'title' => __('Competitions'),
             'breadcrumbs' => [
                 route('admin.competition.index') => __('Competition'),
                 null => __('index')
@@ -57,7 +57,7 @@ class CompetitionController extends Controller
                     return (date('d-m-Y h:m:s', strtotime($data->created_at)));
                 })
                 ->addColumn('action', function($data) {
-                    return '<a class="btn btn-sm btn-success" href="'.route('admin.competitio.show', $data->id).'" title="'.__("See detail").'"><i class="fa fa-eye"></i> '.__("See").'</a> <a class="btn btn-sm btn-warning" href="'.route('admin.competition.edit', $data->id).'" title="'.__("Edit").'"><i class="fa fa-edit"></i> '.__("Edit").'</a>';
+                    return '<a class="btn btn-sm btn-primary" href="'.route('admin.competition.show', $data->id).'" title="'.__("See detail").'"><i class="fa fa-eye"></i> '.__("See").'</a> <a class="btn btn-sm btn-warning" href="'.route('admin.competition.edit', $data->id).'" title="'.__("Edit").'"><i class="fa fa-edit"></i> '.__("Edit").'</a> <a class="btn btn-sm btn-danger" href="'.route('admin.competition.destroy', $data->id).'" title="'.__("Delete").'"><i class="fa fa-trash"></i> '.__("Delete").'</a>';
                 })
                 ->rawColumns(['DT_RowIndex', 'action'])
                 ->make(true);
@@ -95,7 +95,24 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // if (auth()->user()->cant('create', Competition::class)) {
+        //     return redirect()->route('competition.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $validatedData = $request->validate([
+            'name' => 'required|unique:competitions|max:255',
+            'alias' => 'required|unique:competitions',
+            'theme' => 'required',
+            'theme' => 'required',
+            'image' => 'mimes:jpeg,png,jpg',
+            'date' => 'required',
+        ]);
+        $request->merge([
+            'date' => date('Y-m-d', strtotime($request->date)),
+        ]);
+        $competition = Competition::create($request->all());
+        $competition->image = $this->uploadImage($competition, $request);
+        $competition->save();
+        return redirect(route('admin.competition.index'))->with('alert-success', __($this->createdMessage));
     }
 
     /**
@@ -106,7 +123,15 @@ class CompetitionController extends Controller
      */
     public function show(competition $competition)
     {
-        //
+        $view = [
+            'title' => __('Competitons'),
+            'breadcrumbs' => [
+                route('admin.competition.index') => __('Competition'),
+                null => __('show')
+            ],
+            'competition' => $competition,
+        ];
+        return view('admin.competition.show', $view);
     }
 
     /**
@@ -117,7 +142,15 @@ class CompetitionController extends Controller
      */
     public function edit(competition $competition)
     {
-        //
+        $view = [
+            'title' => __('Competitons edit'),
+            'breadcrumbs' => [
+                route('admin.competition.index') => __('Competition'),
+                null => __('show')
+            ],
+            'competition' => $competition,
+        ];
+        return view('admin.competition.edit', $view);
     }
 
     /**
@@ -129,7 +162,24 @@ class CompetitionController extends Controller
      */
     public function update(Request $request, competition $competition)
     {
-        //
+        // if (auth()->user()->cant('create', Competition::class)) {
+        //     return redirect()->route('competition.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $validatedData = $request->validate([
+            'name' => 'required|unique:competitions|max:255',
+            'alias' => 'required|unique:competitions',
+            'theme' => 'required',
+            'theme' => 'required',
+            'image' => 'mimes:jpeg,png,jpg',
+            'date' => 'required',
+        ]);
+        $request->merge([
+            'date' => date('Y-m-d', strtotime($request->date)),
+        ]);
+        $competition->fill($request->all());
+        $competition->image = $this->uploadImage($competition, $request, $competition->image);
+        $competition->save();
+        return redirect(route('admin.competition.edit' , $competition->id))->with('alert-success', __($this->updatedMessage))   ;
     }
 
     /**
@@ -140,6 +190,26 @@ class CompetitionController extends Controller
      */
     public function destroy(competition $competition)
     {
-        //
+        $competition->delete();
+
+        return redirect()->route('admin.competition.index')->with('alert-success', __($this->deletedMessage));
+    }
+
+    /**
+     * Upload submission letter
+     * 
+     * @param  \App\Subsidy  $subsidy
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $oldFile
+     * @return string
+     */
+    public function uploadImage($competition, Request $request, $oldFile = null)
+    {
+        if ($request->hasFile('image')) {
+            $filename = 'image_'.md5($competition->name).'.'.$request->image->extension();
+            $path = $request->image->storeAs('public/competition/'.$competition->name, $filename);
+            return $competition->id.'/'.$filename;
+        }
+        return $oldFile;
     }
 }

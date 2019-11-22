@@ -28,35 +28,34 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => 'admin.competition.store', 'files' => true]) }}
+			{{ Form::open() }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
 							<legend>{{ __('Competition Data') }}</legend>
-							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Name'), 'name', $competition->name, __('Name'), ['disabled' => '']) }}
 
-							{{ Form::bsText(null, __('Alias'), 'alias', old('alias'), __('Alias') ) }}
+							{{ Form::bsText(null, __('Alias'), 'alias', $competition->alias, __('Alias'), ['disabled' => ''] ) }}
 
-							{{ Form::bsText(null, __('Theme'), 'theme', old('theme'), __('Theme') ) }}
+							{{ Form::bsText(null, __('Theme'), 'theme', $competition->theme, __('Theme'), ['disabled' => ''] ) }}
 
-							{{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
+							<!-- {{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }} -->
 
-							{{ Form::bsText(null, __('Date'), 'date', old('date'), __('Date'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Date'), 'date', $competition->date, __('Date'), ['disabled' => '']) }}
 							
 						</fieldset>
 						<fieldset class="col-sm-6">
 							<legend>{{ __('Details') }}</legend>
 
-							{{ Form::bsTextarea(null, __('Description'), 'description', old('description'), __('Description')) }}
+							{{ Form::bsTextarea(null, __('Description'), 'description', $competition->description, __('Description'), ['disabled' => ''] ) }}
 
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', old('terms_and_conditions'), __('Terms And Conditions')) }}
+							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', $competition->terms_and_conditions, __('Terms And Conditions'), ['disabled' => ''] ) }}
 
 						</fieldset>
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
-					{{ Form::submit(__('Save'), ['class' => 'btn btn-primary']) }}
-					{{ link_to(route('admin.competition.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.competition.index'),__('Back'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 

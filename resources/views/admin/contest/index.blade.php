@@ -28,8 +28,8 @@
 
 		<div class="card card-primary">
 			<div class="card-header">
-				<!-- if (auth()->guard('admin')->user()->can('create competition')) -->
-					<a href="{{ route('admin.competition.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
+				<!-- if (auth()->guard('admin')->user()->can('create contest')) -->
+					<a href="{{ route('admin.contest.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
 				<!-- endif -->
             	<button class="btn btn-icon btn-secondary" onclick="reloadTable()" title="{{ __('Refresh') }}"><i class="fa fa-sync"></i></i></button>
 			</div>
@@ -42,10 +42,8 @@
 									<div class="checkbox icheck"><label><input type="checkbox" name="selectData"></label></div>
 								</th>
 								<th>{{ __('Created At') }}</th>
-								<th>{{ __('Name') }}</th>
-								<th>{{ __('Alias') }}</th>
-								<th>{{ __('Theme') }}</th>
-								<th>{{ __('Date') }}</th>
+								<th>{{ __('Competition Name') }}</th>
+								<th>{{ __('Contest Name') }}</th>
 								<th>{{ __('Action') }}</th>
 							</tr>
 						</thead>
@@ -53,6 +51,11 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div class="card-footer bg-whitesmoke">
+				<!-- if (auth()->guard('admin')->user()->can('delete activities')) -->
+					<button class="btn btn-danger btn-sm" name="deleteData" title="{{ __('Delete') }}">{{ __('Delete') }}</button>
+				<!-- endif -->
 			</div>
 		</div>
 
@@ -68,7 +71,7 @@
 			processing: true,
 			serverSide: true,
 			"ajax": {
-				"url": "{{ route('admin.competition.list') }}",
+				"url": "{{ route('admin.contest.list') }}",
 				"type": "POST",
 				"data": function (d) {
 		          d._token = "{{ csrf_token() }}";
@@ -77,10 +80,8 @@
 			columns: [
 				{ data: 'DT_RowIndex', name: 'DT_RowIndex', 'searchable': false },
 				{ data: 'created_at', name: 'created_at' },
+				{ data: 'competitions', name: 'competitions' },
 				{ data: 'name', name: 'name' },
-				{ data: 'alias', name: 'alias' },
-                { data: 'theme', name: 'theme' },
-				{ data: 'date', name: 'date' },
 				{ data: 'action', name: 'action', 'searchable': false },
 			],
 			"columnDefs": [
@@ -103,6 +104,47 @@
       		},
   		});
 
+		$('[name="deleteData"]').click(function(event) {
+			if ($('[name="selectedData[]"]:checked').length > 0) {
+				event.preventDefault();
+				var selectedData = $('[name="selectedData[]"]:checked').map(function(){
+					return $(this).val();
+				}).get();
+				swal({
+					title: '{{ __("Are you sure want to delete this data?") }}',
+					text: '',
+					icon: 'warning',
+					buttons: ['{{ __("Cancel") }}', true],
+					dangerMode: true,
+				})
+				.then((willDelete) => {
+					if (willDelete) {
+						$.ajax({
+							url : "{{ route('admin.contest.destroy') }}",
+							type: "DELETE",
+							dataType: "JSON",
+							data: {"_token" : "{{ csrf_token() }}", "selectedData" : selectedData},
+							success: function(data)
+							{
+								reloadTable();
+							},
+							error: function (jqXHR, textStatus, errorThrown)
+							{
+								if (JSON.parse(jqXHR.responseText).status) {
+									swal("{{ __('Failed!') }}", '{{ __("Data cannot be deleted.") }}', "warning");
+								} else {
+									swal(JSON.parse(jqXHR.responseText).message, "", "error");
+								}
+							}
+						});
+					}
+				});
+			} else {
+				swal("{{ __('Please select a data..') }}", "", "warning");
+			}
+		});
+	});
+
 	function reloadTable() {
 	    table.ajax.reload(null,false); //reload datatable ajax
 	    $('[name="selectData"]').iCheck('uncheck');
@@ -112,6 +154,5 @@
 		reloadTable();
 		$('#filterModal').modal('hide');
 	}
-});
 </script>
 @endsection

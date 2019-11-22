@@ -22,6 +22,7 @@ class Controller extends BaseController
         $this->createdMessage = __('Data successfully created.');
         $this->updatedMessage = __('Data successfully updated.');
         $this->deletedMessage = __('Data successfully deleted.');
+        $this->errorMessage = __('There is some error occured.');
         $this->noPermission = __('You have no related permission.');
         $this->unauthorizedMessage = __('This action is unauthorized.');
         $this->restoredMessage = __('Data successfully restored.');
