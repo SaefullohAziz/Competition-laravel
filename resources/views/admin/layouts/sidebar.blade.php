@@ -25,14 +25,21 @@
       <li class="menu-header">{{ __('Menu') }}</li>
 
       <!-- competition -->
-      <li class="{{ (request()->is('/admin/competition')?'active':'') }}">
+      <li class="{{ (request()->is('/admin/competition/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.competition.index') }}">
           <i class="fa fa-trophy"></i> <span>{{ __('Competition') }}</span>
         </a>
       </li>
 
+      <!-- contest -->
+      <li class="{{ (request()->is('/admin/contest/*')?'active':'') }}">
+        <a class="nav-link" href="{{ route('admin.contest.index') }}">
+          <i class="fas fa-flag-checkered"></i><span>{{ __('Contest') }}</span>
+        </a>
+      </li>
+
       <!-- school -->
-      <li class="{{ (request()->is('/admin/school')?'active':'') }}">
+      <li class="{{ (request()->is('/admin/school/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.school.index') }}">
           <i class="fa fa-university"></i> <span>{{ __('Schools') }}</span>
         </a>

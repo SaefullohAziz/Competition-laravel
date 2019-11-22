@@ -31,7 +31,7 @@ class CompetitionController extends Controller
     public function index()
     {
         $view = [
-            'title' => __('Competitons'),
+            'title' => __('Competitions'),
             'breadcrumbs' => [
                 route('admin.competition.index') => __('Competition'),
                 null => __('index')
@@ -190,7 +190,9 @@ class CompetitionController extends Controller
      */
     public function destroy(competition $competition)
     {
-        //
+        $competition->delete();
+
+        return redirect()->route('admin.competition.index')->with('alert-success', __($this->deletedMessage));
     }
 
     /**

@@ -33,7 +33,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 	]]);
 	Route::prefix('competition')->name('competition.')->group(function () {
 		Route::post('list', 'CompetitionController@list')->name('list');
-		Route::delete('destroy', 'CompetitionController@destroy')->name('destroy');
+		Route::get('destroy/{competition}', 'CompetitionController@destroy')->name('destroy');
 	});
 
 	// Contest
