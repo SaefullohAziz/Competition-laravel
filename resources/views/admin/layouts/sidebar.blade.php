@@ -49,8 +49,8 @@
       <li class="dropdown {{ (request()->is('/admin/user')||request()->is('admin/user/*')||request()->is('admin/juri')||request()->is('admin/juri/*')||request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-cogs"></i> <span>{{ __('Settings') }}</span></a>
         <ul class="dropdown-menu">
-          <li class="{{ (request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.administrator.index') }}">{{ __('Payment') }}</a></li>
-          <li class="{{ (request()->is('admin/juri')||request()->is('admin/juri/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.juri.index') }}">{{ __('Users') }}</a></li>
+          <li class="{{ (request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.administrator.index') }}">{{ __('Administrator') }}</a></li>
+          <li class="{{ (request()->is('admin/juri')||request()->is('admin/juri/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.juri.index') }}">{{ __('Judjes') }}</a></li>
           <li class="{{ (request()->is('admin/user')||request()->is('admin/user/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.user.index') }}">{{ __('Users') }}</a></li>
         </ul>
       </li>
