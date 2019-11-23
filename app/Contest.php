@@ -57,10 +57,10 @@ class Contest extends Model
                 ->join('competitions', 'contests.competition_id', 'competitions.id')
                 ->when(! empty($request->competition_id), function($query) use ($request){
                     return $query->where('competitions.id', $request->competition_id);
-                })
+                }) 
                 ->when(! empty($request->contest_name), function($query) use ($request){
                     return $query->where('contests.name', $request->contest_name);
-                })
+                }) 
                 ->whereNull('contests.deleted_at');
     }
 

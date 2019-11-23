@@ -15,7 +15,7 @@ class Administrator extends Authenticatable
 	use Softdeletes, Uuids, HasRoles;
 
     protected $fillable = [
-        'name', 'username', 'email', 'emeail_verified_at'
+        'name', 'username', 'email', 'email_verified_at', 'password',
     ];
 
     /**
@@ -23,9 +23,9 @@ class Administrator extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'username', 'name', 'email', 'password',
-    ];
+    // protected $fillable = [
+    //     'username', 'name', 'email', 'password'
+    // ];
 
     /**
      * The attributes that should be hidden for arrays.
