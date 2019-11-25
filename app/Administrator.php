@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class Administrator extends Authenticatable
 {
@@ -44,4 +46,25 @@ class Administrator extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Main query for listing
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public static function get(Request $request)
+    {
+        return DB::table('administrators')
+                ->whereNull('deleted_at');
+    }
+
+    /**
+     * Show the list for datatable
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public static function list(Request $request)
+    {
+        return self::get($request)->select('administrators.*');
+    }
 }
