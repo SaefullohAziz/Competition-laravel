@@ -32,28 +32,24 @@
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
-							<legend>{{ __('Contest Data') }}</legend>
-							{{ Form::bsSelect(null, __('Competition Name'), 'competition_id', $competitions, $contest->competition_id, __('Competition Name'), ['disabled' => '']) }}
+							<legend>{{ __('User Data') }}</legend>
+							{{ Form::bsText(null, __('Username'), 'username', $user->username, __('Username'), ['disabled' => '']) }}
 
-							{{ Form::bsText(null, __('Name'), 'name', $contest->name, __('Name'), ['disabled' => '']) }}
+							{{ Form::bsText(null, __('Name'), 'name', $user->name, __('Name'), ['disabled' => '']) }}
 
-							{{ Form::bsText(null, __('Contest Limit'), 'limit', $contest->limit, __('Contest Limit'), ['disabled' => ''] ) }}
+							{{ Form::bsText(null, __('Email'), 'email', $user->email, __('Email'), ['disabled' => '']) }}
 
 						</fieldset>
 						<fieldset class="col-sm-6">
 							<legend>{{ __('Details') }}</legend>
 
-							{{ Form::bsTextarea(null, __('Implementation Instructions'), 'implementation_instruction', $contest->implementation_instruction, __('Implementation Instructions'), ['disabled' => ''] ) }}
-
-							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instructions', $contest->techincal_instructions, __('Technical Instructions'), ['disabled' => ''] ) }}
-
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', $contest->terms_and_conditions, __('Terms And Conditions'), ['disabled' => ''] ) }}
+							<img src="{!! asset('img/avatar/'.$user->photo) !!}" height="270x" width="270px">
 
 						</fieldset>
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
-					{{ link_to(route('admin.contest.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.user.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 

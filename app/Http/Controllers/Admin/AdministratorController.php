@@ -135,7 +135,7 @@ class AdministratorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\adminiistrator  $administrator
+     * @param  \App\administrator  $administrator
      * @return \Illuminate\Http\Response
      */
     public function edit(administrator $administrator)
