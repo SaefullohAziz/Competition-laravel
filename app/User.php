@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contest;
 use App\School;
 use App\ContestParticipant;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -69,5 +71,20 @@ class User extends Authenticatable
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+
+    public static function get(Request $request)
+    {
+        return DB::table('users');
+    }
+
+    /**
+     * Show the list for datatable
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public static function list(Request $request)
+    {
+        return self::get($request)->select('users.*');
     }
 }
