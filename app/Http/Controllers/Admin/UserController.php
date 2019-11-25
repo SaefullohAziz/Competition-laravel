@@ -125,11 +125,37 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            // if ( ! auth()->guard('admin')->user()->can('delete ' . $this->table)) {
+            //     return response()->json(['status' => false, 'message' => __($this->noPermission)], 422);
+            // }
+            if (User::destroy($request->selectedData)){
+                return response()->json(['status' => true, 'message' => __($this->deletedMessage)]);
+            }
+            return response()->json(['status' => false, 'message' => __($this->errorMessage)]);
+        }
+    }
+
+    /**
+     * Upload submission letter
+     * 
+     * @param  \App\user  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $oldFile
+     * @return string
+     */
+    public function uploadImage($user, Request $request, $oldFile = null)
+    {
+        if ($request->hasFile('photo')) {
+            $filename = 'image_'.md5($user->name).'.'.$request->photo->extension();
+            $path = $request->file('photo')->storeAs('img/avatar/'.$user->id, $filename);
+            return $user->id.'/'.$filename;
+        }
+        return $oldFile;
     }
 }
