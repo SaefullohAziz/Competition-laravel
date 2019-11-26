@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,7 +60,7 @@ class UserController extends Controller
         }
     }
 
-    /**
+   /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -79,8 +79,8 @@ class UserController extends Controller
                 route('admin.user.index') => __('User'),
                 null => __('Create')
             ],
-            'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
         ];
+
         return view('admin.user.create', $view);
     }
 
@@ -98,7 +98,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|unique:users|max:255',
             'username' => 'required|unique:users',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required',
         ]);
         $request->merge(['password' =>  Hash::make($request->password)]);
@@ -108,16 +108,24 @@ class UserController extends Controller
         return redirect(route('admin.user.index'))->with('alert-success', __($this->createdMessage));
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        $view = [
+            'title' => __('User Detail'),
+            'breadcrumbs' => [
+                route('admin.user.index') => __('Users'),
+                null => __('Show')
+            ],
+            'user' => $user,
+        ];
+
+        return view('admin.user.show', $view);
     }
 
     /**
@@ -128,8 +136,8 @@ class UserController extends Controller
      */
     public function edit(user $user)
     {
-        // if (auth()->user()->cant('edit', contest::class)) {
-        //     return redirect()->route('contest.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // if (auth()->user()->cant('edit', user::class)) {
+        //     return redirect()->route('user.index')->with('alert-danger', __($this->unauthorizedMessage));
         // }
         $view = [
             'title' => __('User Edit'),
@@ -142,6 +150,14 @@ class UserController extends Controller
         ];
 
         return view('admin.user.edit', $view);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Request $request)
     {
         if ($request->ajax()) {

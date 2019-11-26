@@ -9,6 +9,19 @@ use Illuminate\Http\Request;
 
 class JudgeController extends Controller
 {
+    private $table;
+
+    /**
+     * Create a new class instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table = 'judge';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +29,16 @@ class JudgeController extends Controller
      */
     public function index()
     {
-        //
+        $view = [
+            'title' => __('Judges'),
+            'breadcrumbs' => [
+                route('admin.juri.index') => __('Administrator'),
+                null => __('index')
+            ],
+        ];
+        return view('admin.juri.index', $view);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -28,23 +28,23 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => 'admin.user.store', 'files' => true]) }}
+			{{ Form::open(['route' => 'admin.user.store']) }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
 							<legend>{{ __('User Data') }}</legend>
 							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Username'), 'username', old('username'), __('Username') ) }}
+							{{ Form::bsText(null, __('Username'), 'username', old('username'), __('Username'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Email'), 'email', old('email'), __('Email') ) }}
+							{{ Form::bsText(null, __('Email'), 'email', old('email'), __('Email'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Password'), 'password', old('password'), __('Password') ) }}
+							{{ Form::bsPassword(null, __('Password'), 'password', __('Password'), ['required' => '']) }}
 
-							{{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
+							{{ Form::bsFile(null, __('Photo'), 'photo', __('photo'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
 
 							{{ Form::bsText(null, __('Date'), 'date', old('date'), __('Date'), ['required' => '']) }}
-							
+
 						</fieldset>
 					</div>
 				</div>
