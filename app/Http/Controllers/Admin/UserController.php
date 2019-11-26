@@ -52,7 +52,22 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // if ( ! auth()->guard('admin')->user()->can('create ' . $this->table)) {
+        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->noPermission));
+        // }
+        // if (auth()->guard('admin')->user()->cant('adminCreate', Contest::class)) {
+        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $view = [
+            'title' => __('Create User'),
+            'breadcrumbs' => [
+                route('admin.user.index') => __('User'),
+                null => __('Create')
+            ],
+            'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
+        ];
+
+        return view('admin.user.create', $view);
     }
 
     /**
@@ -69,21 +84,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\user  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        $view = [
-            'title' => __('User Detail'),
-            'breadcrumbs' => [
-                route('admin.user.index') => __('Users'),
-                null => __('Show')
-            ],
-            'user' => $user,
-        ];
-
-        return view('admin.user.show', $view);
+        //
     }
 
     /**
@@ -92,7 +98,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(user $user)
     {
         // if (auth()->user()->cant('edit', contest::class)) {
         //     return redirect()->route('contest.index')->with('alert-danger', __($this->unauthorizedMessage));
@@ -103,7 +109,7 @@ class UserController extends Controller
                 route('admin.user.index') => __('User'),
                 null => __('Edit')
             ],
-            'users' => User::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
+            'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
             'user' => $user,
         ];
 

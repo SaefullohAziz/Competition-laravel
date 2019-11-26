@@ -28,37 +28,42 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => ['admin.contest.update', $contest->id], 'files' => true, 'method' => 'put']) }}
+			{{ Form::open(['route' => ['admin.user.update', $user->id], 'files' => true, 'method' => 'put']) }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
-							<legend>{{ __('Contest Data') }}</legend>
-							{{ Form::bsSelect(null, __('Competition Name'), 'competition_id', $competitions, $contest->competition_id, __('Competition Name'), ['required' => '']) }}
+							<legend>{{ __('User Data') }}</legend>
+							{{ Form::bsText(null, __('Username'), 'username', $user->username, __('Username'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Name'), 'name', $contest->name, __('Name'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Name'), 'name', $user->name, __('Name') ) }}
 
-							{{ Form::bsText(null, __('Contest Limit'), 'limit', $contest->limit, __('Contest Limit') ) }}
+							{{ Form::bsText(null, __('Email'), 'email', $user->email, __('Email'), ['required' => ''] ) }}
 
-						</fieldset>
-						<fieldset class="col-sm-6">
-							<legend>{{ __('Details') }}</legend>
+							{{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
 
-							{{ Form::bsTextarea(null, __('Implementation Instructions'), 'implementation_instruction', $contest->implementation_instruction, __('Implementation Instructions') ) }}
-
-							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instructions', $contest->techincal_instructions, __('Technical Instructions') ) }}
-
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', $contest->terms_and_conditions, __('Terms And Conditions') ) }}
-
-						</fieldset>
+							{{ Form::bsText(null, __('Date'), 'date', $user->date, __('Date')) }}
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
 					{{ Form::submit(__('Save'), ['class' => 'btn btn-primary']) }}
-					{{ link_to(route('admin.contest.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.user.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('script')
+<script>
+	$(document).ready(function () {
+		$('[name="date"]').keypress(function(e) {
+            e.preventDefault();
+        }).daterangepicker({
+        	locale: {format: 'DD-MM-YYYY'},
+        	singleDatePicker: true,
+      	});
+    });
+</script>
 @endsection
