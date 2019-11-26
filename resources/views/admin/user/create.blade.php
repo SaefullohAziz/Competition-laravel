@@ -28,37 +28,46 @@
 
 		<div class="card card-primary">
 
-			{{ Form::open(['route' => 'admin.contest.store']) }}
+			{{ Form::open(['route' => 'admin.user.store', 'files' => true]) }}
 				<div class="card-body">
 					<div class="row">
 						<fieldset class="col-sm-6">
-							<legend>{{ __('Contest Data') }}</legend>
-							{{ Form::bsSelect(null, __('Competition Name'), 'competition_id', $competitions, old('competition_id'), __('Competition Name'), ['required' => '']) }}
-
+							<legend>{{ __('User Data') }}</legend>
 							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Contest Limit'), 'limit', old('limit'), __('Contest Limit') ) }}
+							{{ Form::bsText(null, __('Username'), 'username', old('username'), __('Username') ) }}
 
-						</fieldset>
-						<fieldset class="col-sm-6">
-							<legend>{{ __('Details') }}</legend>
+							{{ Form::bsText(null, __('Email'), 'email', old('email'), __('Email') ) }}
 
-							{{ Form::bsTextarea(null, __('Implementation Instructions'), 'implementation_instruction', old('implementation_instruction'), __('Implementation Instructions')) }}
+							{{ Form::bsText(null, __('Password'), 'password', old('password'), __('Password') ) }}
 
-							{{ Form::bsTextarea(null, __('Technical Instructions'), 'techincal_instructions', old('techincal_instructions'), __('Technical Instructions')) }}
+							{{ Form::bsFile(null, __('Image'), 'image', old('image'), [], [__('File must have extension *.jpg/*.jpeg with size 5 MB or less.')]) }}
 
-							{{ Form::bsTextarea(null, __('Terms And Conditions'), 'terms_and_conditions', old('terms_and_conditions'), __('Terms And Conditions')) }}
-
+							{{ Form::bsText(null, __('Date'), 'date', old('date'), __('Date'), ['required' => '']) }}
+							
 						</fieldset>
 					</div>
 				</div>
 				<div class="card-footer bg-whitesmoke text-center">
 					{{ Form::submit(__('Save'), ['class' => 'btn btn-primary']) }}
-					{{ link_to(route('admin.contest.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
+					{{ link_to(route('admin.user.index'),__('Cancel'), ['class' => 'btn btn-danger']) }}
 				</div>
 			{{ Form::close() }}
 
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('script')
+<script>
+	$(document).ready(function () {
+		$('[name="date"]').keypress(function(e) {
+            e.preventDefault();
+        }).daterangepicker({
+        	locale: {format: 'DD-MM-YYYY'},
+        	singleDatePicker: true,
+      	});
+    });
+</script>
 @endsection

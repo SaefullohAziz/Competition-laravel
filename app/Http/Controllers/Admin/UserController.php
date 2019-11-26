@@ -3,14 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
-use App\Contest;
-use App\Competition;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DataTables;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
+    private $table;
+
+    /**
+     * Create a new class instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table = 'user';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +31,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $view = [ 
-            'title' => 'Users',
-            'competitions' => Competition::pluck('name', 'id')->toArray(),
-            'contests' => Contest::pluck('name', 'id')->toArray()
+        $view = [
+            'title' => __('Users'),
+            'breadcrumbs' => [
+                route('admin.user.index') => __('User'),
+                null => __('index')
+            ],
         ];
         return view('admin.user.index', $view);
     }
@@ -53,10 +68,10 @@ class UserController extends Controller
     public function create()
     {
         // if ( ! auth()->guard('admin')->user()->can('create ' . $this->table)) {
-        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->noPermission));
+        //     return redirect()->route('admin.user.index')->with('alert-danger', __($this->noPermission));
         // }
-        // if (auth()->guard('admin')->user()->cant('adminCreate', Contest::class)) {
-        //     return redirect()->route('admin.contest.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // if (auth()->guard('admin')->user()->cant('adminCreate', User::class)) {
+        //     return redirect()->route('admin.user.index')->with('alert-danger', __($this->unauthorizedMessage));
         // }
         $view = [
             'title' => __('Create User'),
@@ -66,7 +81,6 @@ class UserController extends Controller
             ],
             'competitions' => Competition::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
         ];
-
         return view('admin.user.create', $view);
     }
 
@@ -78,8 +92,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // if (auth()->user()->cant('create', User::class)) {
+        //     return redirect()->route('user.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $validatedData = $request->validate([
+            'name' => 'required|unique:users|max:255',
+            'username' => 'required|unique:users',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        $request->merge(['password' =>  Hash::make($request->password)]);
+        $user = User::create($request->all());
+        $user->photo = $this->uploadImage($user, $request);
+        $user->save();
+        return redirect(route('admin.user.index'))->with('alert-success', __($this->createdMessage));
     }
+
 
     /**
      * Display the specified resource.
@@ -93,9 +121,9 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function edit(user $user)
@@ -114,28 +142,34 @@ class UserController extends Controller
         ];
 
         return view('admin.user.edit', $view);
+    public function destroy(Request $request)
+    {
+        if ($request->ajax()) {
+            // if ( ! auth()->guard('admin')->user()->can('delete ' . $this->table)) {
+            //     return response()->json(['status' => false, 'message' => __($this->noPermission)], 422);
+            // }
+            if (User::destroy($request->selectedData)){
+                return response()->json(['status' => true, 'message' => __($this->deletedMessage)]);
+            }
+            return response()->json(['status' => false, 'message' => __($this->errorMessage)]);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Upload submission letter
+     * 
+     * @param  \App\user  $user
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  string  $oldFile
+     * @return string
      */
-    public function update(Request $request, $id)
+    public function uploadImage($user, Request $request, $oldFile = null)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($request->hasFile('photo')) {
+            $filename = 'image_'.md5($user->name).'.'.$request->photo->extension();
+            $path = $request->file('photo')->storeAs('img/avatar/'.$user->id, $filename);
+            return $user->id.'/'.$filename;
+        }
+        return $oldFile;
     }
 }
