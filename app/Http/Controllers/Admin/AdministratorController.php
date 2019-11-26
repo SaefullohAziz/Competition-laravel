@@ -72,10 +72,10 @@ class AdministratorController extends Controller
     public function create()
     {
         // if ( ! auth()->guard('admin')->user()->can('create ' . $this->table)) {
-        //     return redirect()->route('admin.school.index')->with('alert-danger', __($this->noPermission));
+        //     return redirect()->route('admin.administrator.index')->with('alert-danger', __($this->noPermission));
         // }
-        // if (auth()->guard('admin')->user()->cant('adminCreate', School::class)) {
-        //     return redirect()->route('admin.school.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // if (auth()->guard('admin')->user()->cant('adminCreate', Administrator::class)) {
+        //     return redirect()->route('admin.administrator.index')->with('alert-danger', __($this->unauthorizedMessage));
         // }
         $view = [
             'title' => __('Create Administrator'),
@@ -96,8 +96,8 @@ class AdministratorController extends Controller
     public function store(Request $request)
     {
 
-        // if (auth()->user()->cant('create', Competition::class)) {
-        //     return redirect()->route('competition.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // if (auth()->user()->cant('create', Administrator::class)) {
+        //     return redirect()->route('administrator.index')->with('alert-danger', __($this->unauthorizedMessage));
         // }
         $this->validate($request, [
             'name' => 'required|unique:administrators|max:255',
@@ -205,7 +205,7 @@ class AdministratorController extends Controller
     public function uploadImage($administrator, Request $request, $oldFile = null)
     {
         if ($request->hasFile('photo')) {
-            $filename = 'image_'.md5($administrator->name).'.'.$request->photo->extension();
+            $filename = 'image_'.md5($administrator->photo).'.'.$request->photo->extension();
             $path = $request->file('photo')->storeAs('img/avatar/'.$administrator->id, $filename);
             return $administrator->id.'/'.$filename;
         }

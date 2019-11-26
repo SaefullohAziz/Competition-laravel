@@ -3,14 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
-use App\Contest;
-use App\Competition;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DataTables;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
+    private $table;
+
+    /**
+     * Create a new class instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table = 'user';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +31,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $view = [ 
-            'title' => 'Users',
-            'competitions' => Competition::pluck('name', 'id')->toArray(),
-            'contests' => Contest::pluck('name', 'id')->toArray()
+        $view = [
+            'title' => __('Users'),
+            'breadcrumbs' => [
+                route('admin.user.index') => __('User'),
+                null => __('index')
+            ],
         ];
         return view('admin.user.index', $view);
     }
@@ -52,7 +67,20 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // if ( ! auth()->guard('admin')->user()->can('create ' . $this->table)) {
+        //     return redirect()->route('admin.user.index')->with('alert-danger', __($this->noPermission));
+        // }
+        // if (auth()->guard('admin')->user()->cant('adminCreate', User::class)) {
+        //     return redirect()->route('admin.user.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $view = [
+            'title' => __('Create User'),
+            'breadcrumbs' => [
+                route('admin.user.index') => __('User'),
+                null => __('Create')
+            ],
+        ];
+        return view('admin.user.create', $view);
     }
 
     /**
@@ -63,8 +91,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // if (auth()->user()->cant('create', User::class)) {
+        //     return redirect()->route('user.index')->with('alert-danger', __($this->unauthorizedMessage));
+        // }
+        $validatedData = $request->validate([
+            'name' => 'required|unique:users|max:255',
+            'username' => 'required|unique:users',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        $request->merge(['password' =>  Hash::make($request->password)]);
+        $user = User::create($request->all());
+        $user->photo = $this->uploadImage($user, $request);
+        $user->save();
+        return redirect(route('admin.user.index'))->with('alert-success', __($this->createdMessage));
     }
+
 
     /**
      * Display the specified resource.
@@ -84,42 +126,6 @@ class UserController extends Controller
         ];
 
         return view('admin.user.show', $view);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        // if (auth()->user()->cant('edit', contest::class)) {
-        //     return redirect()->route('contest.index')->with('alert-danger', __($this->unauthorizedMessage));
-        // }
-        $view = [
-            'title' => __('User Edit'),
-            'breadcrumbs' => [
-                route('admin.user.index') => __('User'),
-                null => __('Edit')
-            ],
-            'users' => User::orderBy('created_at', 'DESC')->pluck('name', 'id')->toArray(),
-            'user' => $user,
-        ];
-
-        return view('admin.user.edit', $view);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

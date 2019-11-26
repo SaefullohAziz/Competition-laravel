@@ -35,9 +35,9 @@
 							<legend>{{ __('Administrator Data') }}</legend>
 							{{ Form::bsText(null, __('Name'), 'name', old('name'), __('Name'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Username'), 'username', old('Username'), __('Username'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Username'), 'username', old('username'), __('Username'), ['required' => '']) }}
 
-							{{ Form::bsText(null, __('Email'), 'email', old('Email'), __('Email'), ['required' => '']) }}
+							{{ Form::bsText(null, __('Email'), 'email', old('email'), __('Email'), ['required' => '']) }}
 
 							{{ Form::bsPassword(null, __('Password'), 'password', __('Password'), ['required' => '']) }}
 
