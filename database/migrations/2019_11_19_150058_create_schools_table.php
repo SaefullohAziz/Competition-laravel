@@ -17,7 +17,7 @@ class CreateSchoolsTable extends Migration
             $table->uuid('id')->primary();
             $table->string('type');
             $table->string('name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('email')->unique();
             $table->timestamps();
             $table->softdeletes();
