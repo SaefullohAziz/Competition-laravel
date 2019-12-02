@@ -41,6 +41,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth:ad
 		'destroy',
 	]]);
 	Route::prefix('contest')->name('contest.')->group(function () {
+		Route::get('bin', 'ContestController@bin')->name('bin');
 		Route::post('list', 'ContestController@list')->name('list');
 		Route::delete('destroy', 'ContestController@destroy')->name('destroy');
 	});

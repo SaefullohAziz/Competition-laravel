@@ -16,10 +16,10 @@ class CreateJudgesTable extends Migration
         Schema::create('judges', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('address');
-            $table->string('carrier');
-            $table->string('organitation');
-            $table->string('gender');
+            $table->string('address')->nullable();
+            $table->string('carrier')->nullable();
+            $table->string('organitation')->nullable();
+            $table->string('gender')->nullable();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

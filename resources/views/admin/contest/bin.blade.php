@@ -28,12 +28,7 @@
 
 		<div class="card card-primary">
 			<div class="card-header">
-				<!-- if (auth()->guard('admin')->user()->can('create contest')) -->
-					<a href="{{ route('admin.contest.create') }}" class="btn btn-icon btn-success" title="{{ __('Create') }}"><i class="fa fa-plus"></i></a>
-				<!-- endif -->
-				<button class="btn btn-icon btn-secondary" title="{{ __('Filter') }}" data-toggle="modal" data-target="#filterModal"><i class="fa fa-filter"></i></button>
             	<button class="btn btn-icon btn-secondary" onclick="reloadTable()" title="{{ __('Refresh') }}"><i class="fa fa-sync"></i></i></button>
-            	<a href="{{ route('admin.contest.bin') }}" class="btn btn-icon btn-danger" title="{{ __('Deleted') }}"><i class="fa fa-trash"></i></a>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -43,7 +38,7 @@
 								<th>
 									<div class="checkbox icheck"><label><input type="checkbox" name="selectData"></label></div>
 								</th>
-								<th>{{ __('Created At') }}</th>
+								<th>{{ __('Deleted At') }}</th>
 								<th>{{ __('Competition Name') }}</th>
 								<th>{{ __('Contest Name') }}</th>
 								<th>{{ __('Action') }}</th>
@@ -77,13 +72,14 @@ table = $('#table4data').DataTable({
 		"type": "POST",
 		"data": function (d) {
           d._token = "{{ csrf_token() }}";
+          d.bin = true;
           d.competition_id = $('select[name="competitions"]').val();
           d.contest_name = $('select[name="contests"]').val();
         }
 	},
 	columns: [
 		{ data: 'DT_RowIndex', name: 'DT_RowIndex', 'searchable': false },
-		{ data: 'created_at', name: 'created_at' },
+		{ data: 'deleted_at', name: 'deleted_at' },
 		{ data: 'competitions', name: 'competitions' },
 		{ data: 'name', name: 'name' },
 		{ data: 'action', name: 'action', 'searchable': false },

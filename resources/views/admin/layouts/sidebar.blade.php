@@ -15,7 +15,7 @@
       <li class="menu-header">{{ __('Dashboard') }}</li>
 
       <!-- home -->
-      <li class="{{ (request()->is('/admin/home')?'active':'') }}">
+      <li class="{{ (request()->is('admin/home')?'active':'') }}">
         <a class="nav-link" href="{{ route('home') }}">
           <i class="fa fa-home"></i> <span>{{ __('Home') }}</span>
         </a>
@@ -25,28 +25,28 @@
       <li class="menu-header">{{ __('Menu') }}</li>
 
       <!-- competition -->
-      <li class="{{ (request()->is('/admin/competition/*')?'active':'') }}">
+      <li class="{{ (request()->is('admin/competition')||request()->is('/admin/competition/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.competition.index') }}">
           <i class="fa fa-trophy"></i> <span>{{ __('Competition') }}</span>
         </a>
       </li>
 
       <!-- contest -->
-      <li class="{{ (request()->is('/admin/contest/*')?'active':'') }}">
+      <li class="{{ (request()->is('admin/contest')||request()->is('/admin/contest/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.contest.index') }}">
           <i class="fas fa-flag-checkered"></i><span>{{ __('Contest') }}</span>
         </a>
       </li>
 
       <!-- school -->
-      <li class="{{ (request()->is('/admin/school/*')?'active':'') }}">
+      <li class="{{ (request()->is('admin/school')||request()->is('/admin/school/*')?'active':'') }}">
         <a class="nav-link" href="{{ route('admin.school.index') }}">
           <i class="fa fa-university"></i> <span>{{ __('Schools') }}</span>
         </a>
       </li>
 
       <!-- setting -->
-      <li class="dropdown {{ (request()->is('/admin/user')||request()->is('admin/user/*')||request()->is('admin/juri')||request()->is('admin/juri/*')||request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}">
+      <li class="dropdown {{ (request()->is('admin/user')||request()->is('admin/user/*')||request()->is('admin/juri')||request()->is('admin/juri/*')||request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-cogs"></i> <span>{{ __('Settings') }}</span></a>
         <ul class="dropdown-menu">
           <li class="{{ (request()->is('admin/administrator')||request()->is('admin/administrator/*')?'active':'') }}"><a class="nav-link" href="{{ route('admin.administrator.index') }}">{{ __('Administrator') }}</a></li>
