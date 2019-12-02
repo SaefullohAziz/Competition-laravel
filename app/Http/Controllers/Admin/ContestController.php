@@ -48,6 +48,26 @@ class ContestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function bin()
+    {
+        dd('asw');
+        $view = [
+            'title' => __('Contests'),
+            'breadcrumbs' => [
+                route('admin.contest.index') => __('Contest'),
+                null => __('bin')
+            ],
+            'competitions' => Competition::pluck('name','id')->unique()->toArray(),
+            'contests' => Contest::pluck('name', 'name')->unique()->toArray(),
+        ];
+        return view('admin.contest.bin', $view);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function list(Request $request)
     {
         if ($request->ajax()) {

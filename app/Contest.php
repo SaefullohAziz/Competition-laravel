@@ -60,8 +60,13 @@ class Contest extends Model
                 }) 
                 ->when(! empty($request->contest_name), function($query) use ($request){
                     return $query->where('contests.name', $request->contest_name);
-                }) 
-                ->whereNull('contests.deleted_at');
+                })
+                ->when($request->bin, function($query) use ($request){
+                    return $query->whereNotNull('deleted_at');
+                })
+                ->when(! $request->bin, function($query) use ($request){
+                    return $query->whereNull('deleted_at');
+                });
     }
 
     /**
